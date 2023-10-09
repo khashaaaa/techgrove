@@ -1,0 +1,22 @@
+{
+  "name": "techgrove",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "turbo run dev",
+    "start": "turbo run start",
+    "build": "turbo run build"
+  },
+  "author": "khashaa",
+  "license": "ISC",
+  "dependencies": {
+    "cross-env": "^7.0.3"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.14"
+  },
+  "workspaces": [
+    "workspaces/*"
+  ]
+}
