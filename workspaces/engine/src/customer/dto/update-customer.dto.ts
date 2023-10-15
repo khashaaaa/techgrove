@@ -6,4 +6,5 @@ export class UpdateCustomerDto {
     parent_name?: string
     facebook_id?: string
     google_id?: string
+    orders?: any
 }

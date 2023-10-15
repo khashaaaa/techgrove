@@ -8,27 +8,27 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.orderService.create(createOrderDto);
+  async create(@Body() createOrderDto: CreateOrderDto) {
+    return await this.orderService.create(createOrderDto);
   }
 
   @Get()
-  findAll() {
-    return this.orderService.findAll();
+  async findAll() {
+    return await this.orderService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
+  @Get('mark')
+  async findOne(@Param('mark') mark: string) {
+    return await this.orderService.findOne(mark);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(+id, updateOrderDto);
+  @Patch('mark')
+  async update(@Param('mark') @Body() updateOrderDto: UpdateOrderDto) {
+    return this.orderService.update(updateOrderDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderService.remove(+id);
+  @Delete('mark')
+  async remove(@Param('mark') mark: string) {
+    return this.orderService.remove(mark);
   }
 }

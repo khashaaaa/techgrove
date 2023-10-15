@@ -6,6 +6,9 @@ import { envconfig } from 'config/envconfig'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { CustomerModule } from './customer/customer.module';
 import { OrderModule } from './order/order.module';
+import { ProductModule } from './product/product.module';
+import { CartModule } from './cart/cart.module';
+import { ReturnModule } from './return/return.module';
 
 @Module({
   imports: [
@@ -29,7 +32,10 @@ import { OrderModule } from './order/order.module';
       }),
     }),
     CustomerModule,
-    OrderModule
+    OrderModule,
+    ProductModule,
+    CartModule,
+    ReturnModule
   ],
   controllers: [AppController],
   providers: [AppService],

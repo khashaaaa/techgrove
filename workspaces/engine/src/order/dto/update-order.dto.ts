@@ -1,4 +1,9 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateOrderDto } from './create-order.dto';
+import { Customer } from "src/customer/entities/customer.entity"
 
-export class UpdateOrderDto extends PartialType(CreateOrderDto) {}
+export class UpdateOrderDto {
+
+    mark: string
+    customer?: Customer
+    cart?: any
+    status?: any
+}
