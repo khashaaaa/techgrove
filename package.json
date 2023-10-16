@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "turbo run dev",
     "start": "turbo run start",
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "preview": "turbo run preview"
   },
   "author": "khashaa",
   "license": "ISC",
