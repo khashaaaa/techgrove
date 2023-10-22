@@ -1,26 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateReturnDto } from './dto/create-return.dto';
 import { UpdateReturnDto } from './dto/update-return.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Return } from './entities/return.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ReturnService {
-  create(createReturnDto: CreateReturnDto) {
-    return 'This action adds a new return';
+  constructor(@InjectRepository(Return) private repo: Repository<Return>) { }
+
+  async create(createReturnDto: CreateReturnDto) {
+    const ret = await this.repo.save(createReturnDto);
+    return ret;
   }
 
-  findAll() {
-    return `This action returns all return`;
+  async findAll() {
+    return this.repo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} return`;
+  async findOne(mark: number) {
+    try {
+      const ret = await this.repo.findOneOrFail({ where: { mark } });
+      return ret;
+    } catch (error) {
+      throw new HttpException('Return not found', HttpStatus.NOT_FOUND);
+    }
   }
 
-  update(id: number, updateReturnDto: UpdateReturnDto) {
-    return `This action updates a #${id} return`;
+  async update(updateReturnDto: UpdateReturnDto) {
+    try {
+      const existingRet = await this.repo.findOneOrFail({
+        where: { mark: updateReturnDto.mark },
+      });
+
+      const updatedRet = await this.repo.save({
+        ...existingRet,
+        ...updateReturnDto,
+      });
+
+      return updatedRet;
+    } catch (error) {
+      throw new HttpException('Return not found', HttpStatus.NOT_FOUND);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} return`;
+  async remove(mark: number): Promise<string> {
+    const deleteResult = await this.repo.delete(mark);
+    if (deleteResult.affected === 0) {
+      throw new HttpException('Return not found', HttpStatus.NOT_FOUND);
+    }
+    return 'Data deleted';
   }
 }
+

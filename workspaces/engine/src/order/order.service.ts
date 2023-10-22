@@ -7,8 +7,8 @@ import { Order } from './entities/order.entity';
 
 @Injectable()
 export class OrderService {
+  constructor(@InjectRepository(Order) private repo: Repository<Order>) { }
 
-  constructor(@InjectRepository(Order) private repo: Repository<Order>) {}
   async create(createOrderDto: CreateOrderDto) {
     const order = await this.repo.save(createOrderDto);
     return order;
@@ -19,24 +19,37 @@ export class OrderService {
   }
 
   async findOne(mark: string) {
-    const order = await this.repo.findOne({ where: { mark } });
-    if (!order) {
-      throw new HttpException('Илэрц олдсонгүй', HttpStatus.NOT_FOUND);
+    try {
+      const order = await this.repo.findOneOrFail({ where: { mark } });
+      return order;
+    } catch (error) {
+      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
     }
-    return order;
   }
 
   async update(updateOrderDto: UpdateOrderDto) {
-    const order = await this.repo.findOne({ where: { mark: updateOrderDto.mark } });
-    if (!order) {
-      throw new HttpException('Илэрц олдсонгүй', HttpStatus.NOT_FOUND);
+    try {
+      const existingOrder = await this.repo.findOneOrFail({
+        where: { mark: updateOrderDto.mark },
+      });
+
+      const updatedOrder = await this.repo.save({
+        ...existingOrder,
+        ...updateOrderDto,
+      });
+
+      return updatedOrder;
+    } catch (error) {
+      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
     }
-    const updated = await this.repo.update(updateOrderDto.mark, updateOrderDto);
-    return updated;
   }
 
   async remove(mark: string) {
-    await this.repo.delete(mark);
-    return 'Мэдээлэл устгагдлаа';
+    const deleteResult = await this.repo.delete(mark);
+    if (deleteResult.affected === 0) {
+      throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+    }
+    return 'Data deleted';
   }
 }
+

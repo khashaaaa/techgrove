@@ -7,5 +7,5 @@ export class CreateReturnDto {
     order: Order
     comment: string
     commission: number
-    date_returned: Date
+    date_issued: Date
 }

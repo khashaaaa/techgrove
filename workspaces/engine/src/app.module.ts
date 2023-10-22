@@ -9,6 +9,7 @@ import { OrderModule } from './order/order.module';
 import { ProductModule } from './product/product.module';
 import { CartModule } from './cart/cart.module';
 import { ReturnModule } from './return/return.module';
+import { JwtModule } from '@nestjs/jwt'
 
 @Module({
   imports: [
@@ -31,6 +32,17 @@ import { ReturnModule } from './return/return.module';
         autoLoadEntities: true,
       }),
     }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (confs: ConfigService) => ({
+        global: true,
+        secret: confs.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: '1d'
+        }
+      }),
+      inject: [ConfigService]
+    }),
     CustomerModule,
     OrderModule,
     ProductModule,
@@ -40,4 +52,4 @@ import { ReturnModule } from './return/return.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

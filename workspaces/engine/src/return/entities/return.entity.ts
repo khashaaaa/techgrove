@@ -23,7 +23,7 @@ export class Return {
     commission: number
 
     @Column()
-    date_returned: Date
+    date_issued: Date
 
     @CreateDateColumn()
     created: Date

@@ -8,27 +8,27 @@ export class ReturnController {
   constructor(private readonly returnService: ReturnService) {}
 
   @Post()
-  create(@Body() createReturnDto: CreateReturnDto) {
-    return this.returnService.create(createReturnDto);
+  async create(@Body() createReturnDto: CreateReturnDto) {
+    return await this.returnService.create(createReturnDto);
   }
 
   @Get()
-  findAll() {
-    return this.returnService.findAll();
+  async findAll() {
+    return await this.returnService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.returnService.findOne(+id);
+  @Get('mark')
+  async findOne(@Param('mark') mark: number) {
+    return await this.returnService.findOne(mark);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReturnDto: UpdateReturnDto) {
-    return this.returnService.update(+id, updateReturnDto);
+  @Patch('mark')
+  async update(@Param('mark') @Body() updateReturnDto: UpdateReturnDto) {
+    return await this.returnService.update(updateReturnDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.returnService.remove(+id);
+  @Delete('mark')
+  async remove(@Param('mark') mark: number) {
+    return await this.returnService.remove(mark);
   }
 }

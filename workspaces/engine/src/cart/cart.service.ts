@@ -7,8 +7,8 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class CartService {
-
   constructor(@InjectRepository(Cart) private repo: Repository<Cart>) {}
+
   async create(createCartDto: CreateCartDto) {
     const cart = await this.repo.save(createCartDto);
     return cart;
@@ -19,26 +19,36 @@ export class CartService {
   }
 
   async findOne(mark: number) {
-    const cart = await this.repo.findOne({ where: { mark } });
-    if (!cart) {
-      throw new HttpException('Илэрц олдсонгүй', HttpStatus.NOT_FOUND);
+    try {
+      const cart = await this.repo.findOneOrFail({ where: { mark } });
+      return cart;
+    } catch (error) {
+      throw new HttpException('Cart not found', HttpStatus.NOT_FOUND);
     }
-    return cart;
   }
 
   async update(updateCartDto: UpdateCartDto) {
-    const cart = await this.repo.findOne({
-      where: { mark: updateCartDto.mark },
-    })
-    if (!cart) {
-      throw new HttpException('Илэрц олдсонгүй', HttpStatus.NOT_FOUND);
+    try {
+      const existingCart = await this.repo.findOneOrFail({
+        where: { mark: updateCartDto.mark },
+      });
+
+      const updatedCart = await this.repo.save({
+        ...existingCart,
+        ...updateCartDto,
+      });
+
+      return updatedCart;
+    } catch (error) {
+      throw new HttpException('Cart not found', HttpStatus.NOT_FOUND);
     }
-    const updated = await this.repo.update(updateCartDto.mark, updateCartDto);
-    return updated;
   }
 
   async remove(mark: number): Promise<string> {
-    await this.repo.delete(mark);
-    return 'Мэдээлэл устгагдлаа';
+    const deleteResult = await this.repo.delete(mark);
+    if (deleteResult.affected === 0) {
+      throw new HttpException('Cart not found', HttpStatus.NOT_FOUND);
+    }
+    return 'Data deleted';
   }
 }

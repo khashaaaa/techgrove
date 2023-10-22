@@ -9,6 +9,25 @@ export const Register = () => {
   const [mobile, setMobile] = useState('')
   const [email, setEmail] = useState('')
 
+  const ProcReg = async () => {
+
+    const form = {
+      mobile,
+      email
+    }
+
+    const optionz = {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(form)
+    }
+
+    const resp = await fetch('http://localhost:8080/customer', optionz)
+    console.log(resp)
+  }
+
   const handleMobile = (e) => {
       const val = e.target.value
 
@@ -29,7 +48,7 @@ export const Register = () => {
       <div className="grid grid-rows-4 gap-4 mt-8 w-80 text-sm">
         <input onChange={handleMobile} value={mobile} type="number" placeholder="Утасны дугаар" className="outline-none border-none bg-stone-200 px-4 py-2 rounded-xl focus:ring-4 focus:ring-emerald-200 delay-100" />
         <input onChange={handleEmail} value={email} type="text" placeholder="Имэйл" className="outline-none border-none bg-stone-200 px-4 py-2 rounded-xl focus:ring-4 focus:ring-emerald-200 delay-100" />
-        <button className="bg-emerald-600 text-white rounded-xl px-4 py-2 focus:ring-4 focus:ring-emerald-200 hover:bg-emerald-500 delay-100">Тийм</button>
+        <button onClick={ProcReg} className="bg-emerald-600 text-white rounded-xl px-4 py-2 focus:ring-4 focus:ring-emerald-200 hover:bg-emerald-500 delay-100">Тийм</button>
         <SocialAuth />
       </div>
     </AuthLayout>
