@@ -17,16 +17,18 @@ export class CustomerService {
     const customer = await this.repo.findOne({ where: [{ email }, { mobile }] });
 
     if (!customer) {
-      throw new HttpException('Customer not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Хэрэглэгч байхгүй байна. Бүртгүүлнэ үү', HttpStatus.NOT_FOUND);
     }
 
     if (email !== customer.email && mobile !== customer.mobile) {
-      throw new HttpException('Credentials not match', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Мэдээлэл таарахгүй байна', HttpStatus.FORBIDDEN);
     }
 
     const access_token = await this.jwts.signAsync({ email, mobile }, { secret: process.env.JWT_SECRET })
 
     return {
+      message: 'Амжилттай нэвтэрлээ',
+      ok: true,
       access_token,
       customer
     }
@@ -36,12 +38,16 @@ export class CustomerService {
     const existingCustomer = await this.repo.findOne({ where: [{ email: createCustomerDto.email }, { mobile: createCustomerDto.mobile }] });
 
     if (existingCustomer) {
-      throw new HttpException('Customer already exists', HttpStatus.CONFLICT);
+      throw new HttpException('Мэдээлэл давхцаж байна', HttpStatus.CONFLICT);
     }
 
     const customer = await this.repo.save(createCustomerDto);
 
-    return customer;
+    return {
+      customer,
+      message: 'Амжилттай бүртгэгдлээ',
+      ok: true
+    };
   }
 
   async findAll() {

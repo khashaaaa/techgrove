@@ -19,17 +19,17 @@ export class ProductController {
     return await this.productService.findAll();
   }
 
-  @Get('mark')
+  @Get(':mark')
   async findOne(@Param('mark') mark: string) {
     return await this.productService.findOne(mark);
   }
 
-  @Patch('mark')
+  @Patch(':mark')
   async update(@Param('mark') @Body() updateProductDto: UpdateProductDto) {
     return await this.productService.update(updateProductDto);
   }
 
-  @Delete('mark')
+  @Delete(':mark')
   async remove(@Param('mark') mark: string) {
     return await this.productService.remove(mark);
   }

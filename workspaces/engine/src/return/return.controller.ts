@@ -5,7 +5,7 @@ import { UpdateReturnDto } from './dto/update-return.dto';
 
 @Controller('return')
 export class ReturnController {
-  constructor(private readonly returnService: ReturnService) {}
+  constructor(private readonly returnService: ReturnService) { }
 
   @Post()
   async create(@Body() createReturnDto: CreateReturnDto) {
@@ -17,17 +17,17 @@ export class ReturnController {
     return await this.returnService.findAll();
   }
 
-  @Get('mark')
+  @Get(':mark')
   async findOne(@Param('mark') mark: number) {
     return await this.returnService.findOne(mark);
   }
 
-  @Patch('mark')
+  @Patch(':mark')
   async update(@Param('mark') @Body() updateReturnDto: UpdateReturnDto) {
     return await this.returnService.update(updateReturnDto);
   }
 
-  @Delete('mark')
+  @Delete(':mark')
   async remove(@Param('mark') mark: number) {
     return await this.returnService.remove(mark);
   }

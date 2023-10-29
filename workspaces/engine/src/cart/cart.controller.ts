@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CartService } from './cart.service';
-import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
+import { CartService } from './cart.service'
+import { CreateCartDto } from './dto/create-cart.dto'
+import { UpdateCartDto } from './dto/update-cart.dto'
 
 @Controller('cart')
 export class CartController {
@@ -9,26 +9,26 @@ export class CartController {
 
   @Post()
   async create(@Body() createCartDto: CreateCartDto) {
-    return await this.cartService.create(createCartDto);
+    return await this.cartService.create(createCartDto)
   }
 
   @Get()
   async findAll() {
-    return await this.cartService.findAll();
+    return await this.cartService.findAll()
   }
 
-  @Get('mark')
+  @Get(':mark')
   async findOne(@Param('mark') mark: number) {
-    return await this.cartService.findOne(mark);
+    return await this.cartService.findOne(mark)
   }
 
-  @Patch('mark')
+  @Patch(':mark')
   async update(@Param('mark') @Body() updateCartDto: UpdateCartDto) {
-    return await this.cartService.update(updateCartDto);
+    return await this.cartService.update(updateCartDto)
   }
 
-  @Delete('mark')
+  @Delete(':mark')
   async remove(@Param('mark') mark: number) {
-    return await this.cartService.remove(mark);
+    return await this.cartService.remove(mark)
   }
 }
