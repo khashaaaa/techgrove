@@ -14,7 +14,6 @@ import {
 } from '@tabler/icons-react'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
-import { server_url } from '../../constant'
 
 export const Nav = () => {
 	const navigate = useNavigate()
@@ -35,7 +34,7 @@ export const Nav = () => {
 			}
 		}
 
-		const raw = await fetch(server_url + 'cart/', options)
+		const raw = await fetch('http://localhost:8080/cart', options)
 		const resp = await raw.json()
 
 		setCount(resp.length)

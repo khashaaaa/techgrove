@@ -5,7 +5,6 @@ import { AuthLayout } from '../layouts/AuthLayout'
 import { IconArrowRight } from '@tabler/icons-react'
 import { Alert } from '../comps/Alert'
 import Cookies from 'js-cookie'
-import { server_url } from '../../constant'
 
 export const Login = () => {
 	const access_token = Cookies.get('access_token')
@@ -48,7 +47,7 @@ export const Login = () => {
 				body: JSON.stringify(form)
 			}
 
-			const raw = await fetch(server_url + 'customer/login', options)
+			const raw = await fetch('http://140.99.243.243:8080/customer/login', options)
 			const resp = await raw.json()
 
 			if (resp.ok) {

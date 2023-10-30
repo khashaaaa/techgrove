@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { NumericFormat } from 'react-number-format'
 import { IconX } from '@tabler/icons-react'
 import Cookies from 'js-cookie'
-import { server_url } from '../../constant'
 
 export const PurchaseInfo = ({ product, price, close }) => {
 	const { version, model, color, storage } = product
@@ -153,7 +152,7 @@ export const PurchaseInfo = ({ product, price, close }) => {
 				body: JSON.stringify(formdata)
 			}
 
-			const raw = await fetch(server_url + 'cart', options)
+			const raw = await fetch('http://140.99.243.243:8080/cart', options)
 			const resp = await raw.json()
 
 			if (resp.ok) {
