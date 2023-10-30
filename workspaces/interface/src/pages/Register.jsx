@@ -5,6 +5,7 @@ import { SocialAuth } from '../comps/SocialAuth'
 import { AuthLayout } from '../layouts/AuthLayout'
 import { Alert } from '../comps/Alert'
 import Cookies from 'js-cookie'
+import { server_url } from '../../constant'
 
 export const Register = () => {
 	const access_token = Cookies.get('access_token')
@@ -43,7 +44,7 @@ export const Register = () => {
 				body: JSON.stringify(form)
 			}
 
-			const response = await fetch('http://localhost:8080/customer', options)
+			const response = await fetch(server_url + 'customer', options)
 			const data = await response.json()
 
 			if (data.ok) {
