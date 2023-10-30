@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { MainLayout } from '../layouts/MainLayout'
 import Cookies from 'js-cookie'
+import { server_url } from '../../constant'
 
 export const ShopCart = () => {
 	const access_token = Cookies.get('access_token')
@@ -23,7 +24,7 @@ export const ShopCart = () => {
 			}
 		}
 
-		const raw = await fetch('http://localhost:8080/cart', options)
+		const raw = await fetch(server_url + 'cart', options)
 		const resp = await raw.json()
 		setCards(resp)
 	}

@@ -1,1 +1,1 @@
-export const server_url = import.meta.env.VITE_SERVER_URL
+export const server_url = 'http://140.99.243.243:8080/'
