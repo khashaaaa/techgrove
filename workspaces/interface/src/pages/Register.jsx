@@ -44,7 +44,7 @@ export const Register = () => {
 				body: JSON.stringify(form)
 			}
 
-			const response = await fetch(server_url + 'customer', options)
+			const response = await fetch(server_url + 'customer/register', options)
 			const data = await response.json()
 
 			if (data.ok) {
