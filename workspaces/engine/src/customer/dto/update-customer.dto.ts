@@ -7,4 +7,5 @@ export class UpdateCustomerDto {
     facebook_id?: string
     google_id?: string
     orders?: any[] | undefined
+    carts?: any[] | undefined
 }

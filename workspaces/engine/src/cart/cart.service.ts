@@ -22,7 +22,7 @@ export class CartService {
     return this.repo.find()
   }
 
-  async findOne(mark: number) {
+  async findOne(mark: string) {
     try {
       const cart = await this.repo.findOneOrFail({ where: { mark } })
       return cart
@@ -48,7 +48,7 @@ export class CartService {
     }
   }
 
-  async remove(mark: number): Promise<string> {
+  async remove(mark: string): Promise<string> {
     const deleteResult = await this.repo.delete(mark)
     if (deleteResult.affected === 0) {
       throw new HttpException('Cart not found', HttpStatus.NOT_FOUND)

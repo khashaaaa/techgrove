@@ -4,6 +4,7 @@ import { SocialAuth } from '../comps/SocialAuth'
 import { AuthLayout } from '../layouts/AuthLayout'
 import { IconArrowRight } from '@tabler/icons-react'
 import { Alert } from '../comps/Alert'
+import { Loader } from '../comps/Loader'
 import Cookies from 'js-cookie'
 import { server_url } from '../../constant'
 
@@ -14,6 +15,7 @@ export const Login = () => {
 	const [mobile, setMobile] = useState('')
 	const [email, setEmail] = useState('')
 	const [message, setMessage] = useState('')
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
 		if (access_token) {
@@ -35,6 +37,7 @@ export const Login = () => {
 
 	const loginUser = async () => {
 		try {
+			setLoading(true)
 			const form = {
 				mobile,
 				email
@@ -54,11 +57,12 @@ export const Login = () => {
 			if (resp.ok) {
 				Cookies.set('access_token', resp.access_token)
 				Cookies.set('customer', JSON.stringify(resp.customer))
-				setMessage(resp.message)
-				setTimeout(() => navigate('/'), 2000)
+				setTimeout(() => {setLoading(false), navigate('/')}, 2000)
 			} else {
 				setMessage(resp.message)
 			}
+
+			setTimeout(() => setMessage(), 2000)
 		} catch (error) {
 			console.error('Error:', error)
 		}
@@ -66,6 +70,9 @@ export const Login = () => {
 
 	return (
 		<AuthLayout>
+			{
+				loading ? <Loader /> : null
+			}
 			<Alert msg={message} proc={setMessage} />
 			<p className="my-4 text-center">Нэвтрэх хэсэг</p>
 			<Link

@@ -4,6 +4,7 @@ import { IconArrowRight } from '@tabler/icons-react'
 import { SocialAuth } from '../comps/SocialAuth'
 import { AuthLayout } from '../layouts/AuthLayout'
 import { Alert } from '../comps/Alert'
+import { Loader } from '../comps/Loader'
 import Cookies from 'js-cookie'
 import { server_url } from '../../constant'
 
@@ -14,6 +15,7 @@ export const Register = () => {
 	const [mobile, setMobile] = useState('')
 	const [email, setEmail] = useState('')
 	const [message, setMessage] = useState('')
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
 		if (access_token) {
@@ -35,6 +37,7 @@ export const Register = () => {
 
 	const registerUser = async () => {
 		try {
+			setLoading(true)
 			const form = { mobile, email }
 			const options = {
 				method: 'POST',
@@ -48,19 +51,21 @@ export const Register = () => {
 			const data = await response.json()
 
 			if (data.ok) {
-				setMessage(data.message)
-				setTimeout(() => navigate('/login'), 2000)
+				setTimeout(() => {setLoading(false), navigate('/login')}, 2000)
 			} else {
 				setMessage(data.message)
 			}
+			setTimeout(() => setMessage(), 2000)
 		} catch (error) {
-			console.error('Error:', error)
-			// Handle the error here (e.g., display an error message)
+			console.error('Алдаа гарлаа: ', error)
 		}
 	}
 
 	return (
 		<AuthLayout>
+			{
+				loading ? <Loader /> : null
+			}
 			<Alert msg={message} proc={setMessage} />
 			<p className="my-4 text-center">Шинэ хэрэглэгч бүртгүүлэх хэсэг</p>
 			<Link

@@ -157,15 +157,18 @@ export const PurchaseInfo = ({ product, price, close }) => {
 			const resp = await raw.json()
 
 			if (resp.ok) {
-				setMessage(resp.message)
-				Cookies.set('access_token', resp.access_token)
-				close({})
-				navigate('/cart')
+				setTimeout(() => {
+					close({})
+					navigate('/shopcart')
+				}, 2000)
+				
 			} else {
 				setMessage(resp.message)
 			}
+
+			setTimeout(() => setMessage(), 2000)
 		} catch (error) {
-			console.error('Error:', error)
+			console.error('Алдаа гарлаа: ', error)
 		}
 	}
 

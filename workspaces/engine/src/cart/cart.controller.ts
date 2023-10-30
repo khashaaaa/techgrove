@@ -18,7 +18,7 @@ export class CartController {
   }
 
   @Get(':mark')
-  async findOne(@Param('mark') mark: number) {
+  async findOne(@Param('mark') mark: string) {
     return await this.cartService.findOne(mark)
   }
 
@@ -28,7 +28,7 @@ export class CartController {
   }
 
   @Delete(':mark')
-  async remove(@Param('mark') mark: number) {
+  async remove(@Param('mark') mark: string) {
     return await this.cartService.remove(mark)
   }
 }

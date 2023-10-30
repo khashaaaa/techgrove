@@ -1,3 +1,4 @@
+import { Cart } from 'src/cart/entities/cart.entity'
 import { Order } from 'src/order/entities/order.entity'
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm'
 
@@ -27,6 +28,9 @@ export class Customer {
 
     @OneToMany(() => Order, order => order.customer)
     orders?: Order[]
+
+    @OneToMany(() => Cart, cart => cart.customer)
+    carts?: Cart[]
 
     @CreateDateColumn()
     created: Date
