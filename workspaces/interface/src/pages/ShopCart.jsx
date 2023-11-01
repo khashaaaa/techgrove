@@ -13,25 +13,29 @@ export const ShopCart = () => {
 	const [parsed, setParsed] = useState()
 
 	useEffect(() => {
-		if (!access_token) {
+		if (!access_token && !customer) {
 			navigate('/login')
 		}
-		getCard()
-
-		const decodedValue = decodeURIComponent(customer)
-		const storedObject = JSON.parse(decodedValue)
-		setParsed(storedObject)
+		else {
+			const decodedValue = decodeURIComponent(customer)
+			const storedObject = JSON.parse(decodedValue)
+			setParsed(storedObject)
+			getCard(storedObject)
+		}
 	}, [])
 
-	const getCard = async () => {
+	const getCard = async (user) => {
 		const options = {
-			method: 'GET',
+			method: 'POST',
 			headers: {
 				Authorization: `Bearer ${access_token}`
+			},
+			body: {
+				customer: user
 			}
 		}
 
-		const raw = await fetch(server_url + 'cart', options)
+		const raw = await fetch(server_url + 'cart/customer', options)
 		const resp = await raw.json()
 		setCards(resp)
 	}

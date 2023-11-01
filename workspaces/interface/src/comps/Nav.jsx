@@ -20,22 +20,36 @@ export const Nav = () => {
 	const navigate = useNavigate()
 
 	const access_token = Cookies.get('access_token')
+	const customer = Cookies.get('customer')
 
 	const [count, setCount] = useState(null)
+	const [parsed, setParsed] = useState()
 
 	useEffect(() => {
-		getCard()
+		if(!customer) {
+			return
+		}
+		else {
+			const decodedValue = decodeURIComponent(customer)
+			const storedObject = JSON.parse(decodedValue)
+			setParsed(storedObject)
+			getCard(storedObject)
+		}
 	}, [])
 
-	const getCard = async () => {
+	const getCard = async (user) => {
+
 		const options = {
-			method: 'GET',
+			method: 'POST',
 			headers: {
 				Authorization: `Bearer ${access_token}`
+			},
+			body: {
+				customer: user
 			}
 		}
 
-		const raw = await fetch(server_url + 'cart', options)
+		const raw = await fetch(server_url + 'cart/customer', options)
 		const resp = await raw.json()
 
 		setCount(resp.length)
@@ -74,9 +88,16 @@ export const Nav = () => {
 							className="text-white text-xs flex flex-col items-center mr-4 w-16 relative"
 						>
 							<IconShoppingBag />
-							<p className="absolute right-4 top-0 flex items-center justify-center bg-emerald-600 w-4 h-4 rounded-full font-bold">
-								{count}
-							</p>
+
+							{
+								count ? (
+									<p className="absolute right-4 top-0 flex items-center justify-center bg-emerald-600 w-4 h-4 rounded-full font-bold">
+										{count}
+									</p>
+								)
+								:
+								null
+							}
 							Сагс
 						</button>
 					</Link>

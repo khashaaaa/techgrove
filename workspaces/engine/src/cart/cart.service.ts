@@ -4,6 +4,7 @@ import { UpdateCartDto } from './dto/update-cart.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Cart } from './entities/cart.entity'
 import { Repository } from 'typeorm'
+import { Customer } from 'src/customer/entities/customer.entity'
 
 @Injectable()
 export class CartService {
@@ -20,6 +21,11 @@ export class CartService {
 
   async findAll() {
     return this.repo.find()
+  }
+
+  async findByCustomer(customer: Customer) {
+
+    return await this.repo.find({ where: { customer } })
   }
 
   async findOne(mark: string) {

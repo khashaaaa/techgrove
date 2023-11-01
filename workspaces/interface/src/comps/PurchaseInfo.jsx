@@ -4,6 +4,7 @@ import { NumericFormat } from 'react-number-format'
 import { IconX } from '@tabler/icons-react'
 import Cookies from 'js-cookie'
 import { server_url } from '../../constant'
+import { Alert } from './Alert'
 
 export const PurchaseInfo = ({ product, price, close }) => {
 	const { version, model, color, storage } = product
@@ -132,6 +133,13 @@ export const PurchaseInfo = ({ product, price, close }) => {
 	}
 
 	const InsertCart = async () => {
+
+		if(!customer) {
+			setMessage('Та эхлээд нэвтэрнэ үү')
+			setTimeout(() => navigate('/login'), 2000)
+			return
+		}
+
 		const decodedValue = decodeURIComponent(customer)
 		const storedObject = JSON.parse(decodedValue)
 
@@ -174,6 +182,9 @@ export const PurchaseInfo = ({ product, price, close }) => {
 
 	return (
 		<div className="mt-8 w-full flex justify-center items-center">
+			{
+				message ? <Alert msg={message} proc={setMessage} /> : null
+			}
 			<div className="flex justify-between rounded-2xl border-dashed border-2 border-stone-400 p-4 relative">
 				<IconX
 					onClick={() => close({})}

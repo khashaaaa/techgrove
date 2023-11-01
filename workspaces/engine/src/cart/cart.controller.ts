@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CartService } from './cart.service'
 import { CreateCartDto } from './dto/create-cart.dto'
 import { UpdateCartDto } from './dto/update-cart.dto'
+import { Customer } from 'src/customer/entities/customer.entity'
 
 @Controller('cart')
 export class CartController {
@@ -15,6 +16,11 @@ export class CartController {
   @Get()
   async findAll() {
     return await this.cartService.findAll()
+  }
+
+  @Post('customer')
+  async findByCustomer(@Body() customer: Customer) {
+    return await this.cartService.findByCustomer(customer)
   }
 
   @Get(':mark')

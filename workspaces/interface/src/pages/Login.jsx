@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { LoaderContext } from '../context/LoaderContext'
 import { SocialAuth } from '../comps/SocialAuth'
 import { AuthLayout } from '../layouts/AuthLayout'
 import { IconArrowRight } from '@tabler/icons-react'
@@ -15,7 +16,8 @@ export const Login = () => {
 	const [mobile, setMobile] = useState('')
 	const [email, setEmail] = useState('')
 	const [message, setMessage] = useState('')
-	const [loading, setLoading] = useState(false)
+
+	const { show, hide } = useContext(LoaderContext)
 
 	useEffect(() => {
 		if (access_token) {
@@ -37,7 +39,8 @@ export const Login = () => {
 
 	const loginUser = async () => {
 		try {
-			setLoading(true)
+			show()
+
 			const form = {
 				mobile,
 				email
@@ -57,8 +60,9 @@ export const Login = () => {
 			if (resp.ok) {
 				Cookies.set('access_token', resp.access_token)
 				Cookies.set('customer', JSON.stringify(resp.customer))
-				setTimeout(() => {setLoading(false), navigate('/')}, 2000)
+				setTimeout(() => {hide(), navigate('/')}, 2000)
 			} else {
+				hide()
 				setMessage(resp.message)
 			}
 
@@ -71,9 +75,8 @@ export const Login = () => {
 	return (
 		<AuthLayout>
 			{
-				loading ? <Loader /> : null
+				message ? <Alert msg={message} proc={setMessage} /> : null
 			}
-			<Alert msg={message} proc={setMessage} />
 			<p className="my-4 text-center">Нэвтрэх хэсэг</p>
 			<Link
 				to="/register"
