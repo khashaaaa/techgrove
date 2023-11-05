@@ -54,11 +54,14 @@ export class CartService {
     }
   }
 
-  async remove(mark: string): Promise<string> {
+  async remove(mark: string) {
     const deleteResult = await this.repo.delete(mark)
     if (deleteResult.affected === 0) {
       throw new HttpException('Cart not found', HttpStatus.NOT_FOUND)
     }
-    return 'Data deleted'
+    return {
+      ok: true,
+      message: 'Амжилттай устгагдлаа'
+    }
   }
 }

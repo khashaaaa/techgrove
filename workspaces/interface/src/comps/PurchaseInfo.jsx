@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { NumericFormat } from 'react-number-format'
 import { IconX } from '@tabler/icons-react'
 import Cookies from 'js-cookie'
 import { server_url } from '../../constant'
 import { Alert } from './Alert'
+import { LoaderContext } from '../context/LoaderContext'
 
 export const PurchaseInfo = ({ product, price, close }) => {
 	const { version, model, color, storage } = product
@@ -15,6 +16,8 @@ export const PurchaseInfo = ({ product, price, close }) => {
 
 	const [productImage, setProductImage] = useState('')
 	const [message, setMessage] = useState('')
+
+	const { show, hide } = useContext(LoaderContext)
 
 	useEffect(() => {
 		generateImage()
@@ -152,6 +155,7 @@ export const PurchaseInfo = ({ product, price, close }) => {
 		}
 
 		try {
+			show()
 			const options = {
 				method: 'POST',
 				headers: {
@@ -167,17 +171,21 @@ export const PurchaseInfo = ({ product, price, close }) => {
 			if (resp.ok) {
 				setTimeout(() => {
 					close({})
+					hide()
 					navigate('/shopcart')
 				}, 2000)
 				
 			} else {
+				hide()
 				setMessage(resp.message)
 			}
 
-			setTimeout(() => setMessage(), 2000)
+			setTimeout(() => {hide(), setMessage()}, 2000)
 		} catch (error) {
-			console.error('Алдаа гарлаа: ', error)
+			setMessage('Алдаа гарлаа: ' + error)
 		}
+
+		setTimeout(() => setMessage(''), 2000)
 	}
 
 	return (

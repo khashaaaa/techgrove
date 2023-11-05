@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { MainLayout } from '../layouts/MainLayout'
 import Cookies from 'js-cookie'
 import { server_url } from '../../constant'
 import { useNavigate } from 'react-router-dom'
+import { IconTrash } from '@tabler/icons-react'
+import { LoaderContext } from '../context/LoaderContext'
 
 export const ShopCart = () => {
 	const navigate = useNavigate()
@@ -12,32 +14,64 @@ export const ShopCart = () => {
 	const [cards, setCards] = useState()
 	const [parsed, setParsed] = useState()
 
+	const [message, setMessage] = useState('')
+    const { show, hide } = useContext(LoaderContext)
+
 	useEffect(() => {
-		if (!access_token && !customer) {
+		if (!access_token) {
 			navigate('/login')
 		}
 		else {
-			const decodedValue = decodeURIComponent(customer)
-			const storedObject = JSON.parse(decodedValue)
-			setParsed(storedObject)
-			getCard(storedObject)
+			getCards()
 		}
 	}, [])
 
-	const getCard = async (user) => {
-		const options = {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${access_token}`
-			},
-			body: {
-				customer: user
+	const getCards = async () => {
+		try {
+			const decodedValue = decodeURIComponent(customer)
+			const storedObject = JSON.parse(decodedValue)
+			setParsed(storedObject)
+	
+			const options = {
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${access_token}`
+				},
+				body: {
+					customer: storedObject
+				}
 			}
+	
+			const raw = await fetch(server_url + 'cart/customer', options)
+			const resp = await raw.json()
+			setCards(resp)
+		} catch (error) {
+			setMessage('Мэдээлэл татахад алдаа гарлаа: ' + error)
 		}
 
-		const raw = await fetch(server_url + 'cart/customer', options)
-		const resp = await raw.json()
-		setCards(resp)
+		setTimeout(() => setMessage(''), 2000)
+	}
+
+	const deleteCard = async (mark) => {
+		try {
+			show()
+			const options = {
+				method: 'DELETE',
+				headers: {
+					Authorization: `Bearer ${access_token}`
+				}
+			}
+	
+			const raw = await fetch(`${server_url}cart/${mark}`, options)
+			const resp = await raw.json()
+			if (resp.ok) {
+				setTimeout(() => {hide(), getCards()}, 2000)
+			}
+		}
+		catch (error) {
+			setMessage('Алдаа гарлаа: ' + error)
+		}
+		setTimeout(() => setMessage(''), 2000)
 	}
 
 	return (
@@ -48,8 +82,9 @@ export const ShopCart = () => {
 						return (
 							<div
 								key={num}
-								className="border-dashed border-2 border-stone-400 rounded-2xl p-4"
+								className="relative border-dashed border-2 border-stone-400 rounded-2xl p-4"
 							>
+								<IconTrash onClick={() => deleteCard(card.mark)} className='absolute top-2 right-2 cursor-pointer' />
 								<table>
 									<tbody>
 										<tr>

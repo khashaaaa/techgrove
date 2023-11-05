@@ -8,7 +8,7 @@ export class Cart {
     @PrimaryGeneratedColumn('uuid')
     mark: string
 
-    @ManyToOne(() => Customer, (customer) => customer.carts)
+    @ManyToOne(() => Customer, customer => customer.carts)
     customer: Customer
 
     @Column('simple-json')

@@ -10,7 +10,8 @@ import {
 	IconDeviceWatch,
 	IconDeviceAirpods,
 	IconDeviceLaptop,
-	IconPower
+	IconPower,
+	IconTransform
 } from '@tabler/icons-react'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
@@ -82,6 +83,15 @@ export const Nav = () => {
 				</div>
 
 				<div className="flex">
+					<Link to="/tradein">
+						<button
+							type="button"
+							className="text-white text-xs flex flex-col items-center mr-4 w-16 relative"
+						>
+							<IconTransform />
+							Солилцоо
+						</button>
+					</Link>
 					<Link to="/shopcart">
 						<button
 							type="button"

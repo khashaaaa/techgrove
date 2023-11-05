@@ -1,5 +1,6 @@
 import { Cart } from 'src/cart/entities/cart.entity'
 import { Order } from 'src/order/entities/order.entity'
+import { Tradin } from 'src/tradin/entities/tradin.entity'
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm'
 
 @Entity()
@@ -31,6 +32,9 @@ export class Customer {
 
     @OneToMany(() => Cart, cart => cart.customer)
     carts?: Cart[]
+
+    @OneToMany(() => Tradin, tradin => tradin.customer)
+    tradin?: Tradin[]
 
     @CreateDateColumn()
     created: Date

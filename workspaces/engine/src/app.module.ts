@@ -10,6 +10,7 @@ import { ProductModule } from './product/product.module';
 import { CartModule } from './cart/cart.module';
 import { ReturnModule } from './return/return.module';
 import { JwtModule } from '@nestjs/jwt'
+import { TradinModule } from './tradin/tradin.module';
 
 @Module({
   imports: [
@@ -47,7 +48,8 @@ import { JwtModule } from '@nestjs/jwt'
     OrderModule,
     ProductModule,
     CartModule,
-    ReturnModule
+    ReturnModule,
+    TradinModule
   ],
   controllers: [AppController],
   providers: [AppService],
