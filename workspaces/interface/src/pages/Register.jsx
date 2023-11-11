@@ -55,6 +55,7 @@ export const Register = () => {
       } else {
         hide()
         setMessage(data.message)
+        console.log(data)
       }
       setTimeout(() => setMessage(''), 2000)
     } catch (error) {
