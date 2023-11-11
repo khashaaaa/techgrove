@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { LoaderContext } from '../context/LoaderContext'
 import { SocialAuth } from '../comps/SocialAuth'
 import { AuthLayout } from '../layouts/AuthLayout'
-import { IconArrowRight } from '@tabler/icons-react'
+import { IconArrowRight, IconEye, IconEyeOff } from '@tabler/icons-react'
 import { Alert } from '../comps/Alert'
 import { Loader } from '../comps/Loader'
 import Cookies from 'js-cookie'
@@ -14,8 +14,10 @@ export const Login = () => {
 	const navigate = useNavigate()
 
 	const [mobile, setMobile] = useState('')
-	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+
 	const [message, setMessage] = useState('')
+	const [toggle, setToggle] = useState(false)
 
 	const { show, hide } = useContext(LoaderContext)
 
@@ -33,8 +35,8 @@ export const Login = () => {
 		}
 	}
 
-	const handleEmail = (e) => {
-		setEmail(e.target.value)
+	const handlePassword = (e) => {
+		setPassword(e.target.value)
 	}
 
 	const loginUser = async () => {
@@ -43,7 +45,7 @@ export const Login = () => {
 
 			const form = {
 				mobile,
-				email
+				password
 			}
 
 			const options = {
@@ -60,7 +62,7 @@ export const Login = () => {
 			if (resp.ok) {
 				Cookies.set('access_token', resp.access_token)
 				Cookies.set('customer', JSON.stringify(resp.customer))
-				setTimeout(() => {hide(), navigate('/')}, 2000)
+				setTimeout(() => { hide(), navigate('/') }, 2000)
 			} else {
 				hide()
 				setMessage(resp.message)
@@ -84,7 +86,7 @@ export const Login = () => {
 			>
 				<IconArrowRight /> эсвэл бүртгүүлэх
 			</Link>
-			<div className="grid grid-rows-4 gap-4 mt-8 w-80 text-sm">
+			<div className="grid grid-rows-3 gap-4 mt-8 w-80 text-sm">
 				<input
 					onChange={handleMobile}
 					value={mobile}
@@ -92,13 +94,12 @@ export const Login = () => {
 					placeholder="Утасны дугаар"
 					className="outline-none border-none bg-stone-200 px-4 py-2 rounded-xl focus:ring-4 focus:ring-emerald-200 delay-100"
 				/>
-				<input
-					onChange={handleEmail}
-					value={email}
-					type="text"
-					placeholder="Имэйл"
-					className="outline-none border-none bg-stone-200 px-4 py-2 rounded-xl focus:ring-4 focus:ring-emerald-200 delay-100"
-				/>
+				<div className='flex items-center'>
+					<input onChange={handlePassword} value={password} type={toggle ? 'text' : 'password'} placeholder='Нууц үг' className='w-full mr-2 outline-none border-none bg-stone-200 px-4 py-2 rounded-xl focus:ring-4 focus:ring-emerald-200 delay-100' />
+					{
+						toggle ? <IconEyeOff onClick={() => setToggle(!toggle)} className='cursor-pointer' /> : <IconEye onClick={() => setToggle(!toggle)} className='cursor-pointer' />
+					}
+				</div>
 				<button
 					onClick={loginUser}
 					className="bg-emerald-600 text-white rounded-xl px-4 py-2 focus:ring-4 focus:ring-emerald-200 hover:bg-emerald-500 delay-100"

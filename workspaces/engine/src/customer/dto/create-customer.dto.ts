@@ -1,6 +1,7 @@
 export class CreateCustomerDto {
     email: string
     mobile: string
+    password: string
     given_name?: string
     parent_name?: string
     facebook_id?: string

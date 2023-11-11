@@ -15,6 +15,9 @@ export class Customer {
     @Column()
     mobile: string
 
+    @Column()
+    password: string
+
     @Column({ nullable: true })
     given_name?: string
 
