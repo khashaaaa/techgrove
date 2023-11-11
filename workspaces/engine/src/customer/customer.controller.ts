@@ -13,7 +13,7 @@ export class CustomerController {
     return await this.customerService.login(createCustomerDto)
   }
 
-  @Post()
+  @Post('register')
   async create(@Body() createCustomerDto: CreateCustomerDto) {
     return await this.customerService.create(createCustomerDto)
   }
