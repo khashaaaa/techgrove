@@ -55,32 +55,36 @@ export class CustomerService {
   }
 
   async create(createCustomerDto: CreateCustomerDto) {
-    const existingCustomer = await this.repo.findOne({
-      where: [
-        { email: createCustomerDto.email },
-        { mobile: createCustomerDto.mobile },
-      ],
-    })
+    try {
+      const existingCustomer = await this.repo.findOne({
+        where: {
+          email: createCustomerDto.email,
+          mobile: createCustomerDto.mobile,
+        },
+      })
 
-    if (existingCustomer) {
-      throw new HttpException('Мэдээлэл давхцаж байна', HttpStatus.CONFLICT)
-    }
+      if (existingCustomer) {
+        throw new HttpException('Мэдээлэл давхцаж байна', HttpStatus.CONFLICT)
+      }
 
-    const saltOrRounds = 10
-    const hashedPassword = await bcrypt.hash(
-      createCustomerDto.password,
-      saltOrRounds,
-    )
+      const saltOrRounds = 10
+      const hashedPassword = await bcrypt.hash(
+        createCustomerDto.password,
+        saltOrRounds,
+      )
 
-    const customer = await this.repo.save({
-      ...createCustomerDto,
-      password: hashedPassword,
-    })
+      const customer = await this.repo.save({
+        ...createCustomerDto,
+        password: hashedPassword,
+      })
 
-    return {
-      customer,
-      message: 'Амжилттай бүртгэгдлээ',
-      ok: true,
+      return {
+        customer,
+        message: 'Амжилттай бүртгэгдлээ',
+        ok: true,
+      }
+    } catch (error) {
+      throw new HttpException(error.message, error.status)
     }
   }
 

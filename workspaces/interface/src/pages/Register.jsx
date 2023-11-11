@@ -55,7 +55,6 @@ export const Register = () => {
       } else {
         hide()
         setMessage(data.message)
-        console.log(data)
       }
       setTimeout(() => setMessage(''), 2000)
     } catch (error) {
@@ -88,12 +87,6 @@ export const Register = () => {
           placeholder='Имэйл'
           className='outline-none border-none bg-stone-200 px-4 py-2 rounded-xl focus:ring-4 focus:ring-emerald-200 delay-100'
         />
-        <div className='flex items-center'>
-          <input onChange={(e) => handleInputChange(e, setPassword)} value={password} type={toggle ? 'text' : 'password'} placeholder='Нууц үг' className='w-full mr-2 outline-none border-none bg-stone-200 px-4 py-2 rounded-xl focus:ring-4 focus:ring-emerald-200 delay-100' />
-          {
-            toggle ? <IconEyeOff onClick={() => setToggle(!toggle)} className='cursor-pointer' /> : <IconEye onClick={() => setToggle(!toggle)} className='cursor-pointer' />
-          }
-        </div>
         <input
           onChange={(e) => handleInputChange(e, setGivenName)}
           value={given_name}
@@ -108,6 +101,12 @@ export const Register = () => {
           placeholder='Овог'
           className='outline-none border-none bg-stone-200 px-4 py-2 rounded-xl focus:ring-4 focus:ring-emerald-200 delay-100'
         />
+        <div className='flex items-center'>
+          <input onChange={(e) => handleInputChange(e, setPassword)} value={password} type={toggle ? 'text' : 'password'} placeholder='Нууц үг' className='w-full mr-2 outline-none border-none bg-stone-200 px-4 py-2 rounded-xl focus:ring-4 focus:ring-emerald-200 delay-100' />
+          {
+            toggle ? <IconEyeOff onClick={() => setToggle(!toggle)} className='cursor-pointer' /> : <IconEye onClick={() => setToggle(!toggle)} className='cursor-pointer' />
+          }
+        </div>
         <button onClick={registerUser} className='bg-emerald-600 text-white rounded-xl px-4 py-2 focus:ring-4 focus:ring-emerald-200 hover:bg-emerald-500 delay-100'>
           Болсон
         </button>
